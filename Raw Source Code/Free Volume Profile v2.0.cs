@@ -5714,10 +5714,15 @@ namespace cAlgo
             }
 
             // Load the previously saved volume mode.
-            string volModeText = storageModel.Params["PanelMode"].ToString();
-            _ = Enum.TryParse(volModeText, out VolumeMode_Data volMode);
-            Outside.GeneralParams.VolumeMode_Input = volMode;
-            ModeBtn.Text = volModeText;
+            if (storageModel.Params.TryGetValue("PanelMode", out var panelModeValue))
+            {
+                string volModeText = panelModeValue.ToString();
+                if (Enum.TryParse(volModeText, out VolumeMode_Data volMode))
+                {
+                    Outside.GeneralParams.VolumeMode_Input = volMode;
+                    ModeBtn.Text = volModeText;
+                }
+            }
 
             // Use loaded params as _originalValues
             RefreshHighlighting();
